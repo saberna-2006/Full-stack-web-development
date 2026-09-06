@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Saberna D | Portfolio</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:"Segoe UI",Arial,sans-serif;
+    background:#070b16;
+    color:#fff;
+    overflow-x:hidden;
+}
+
+body::before{
+    content:"";
+    position:fixed;
+    width:500px;
+    height:500px;
+    top:-180px;
+    left:-180px;
+    background:rgba(107,92,255,.20);
+    filter:blur(110px);
+    border-radius:50%;
+    z-index:-1;
+}
+
+body::after{
+    content:"";
+    position:fixed;
+    width:450px;
+    height:450px;
+    right:-180px;
+    bottom:-180px;
+    background:rgba(0,200,255,.14);
+    filter:blur(110px);
+    border-radius:50%;
+    z-index:-1;
+}
+
+/* NAVBAR */
+nav{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:75px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:0 8%;
+    background:rgba(7,11,22,.78);
+    backdrop-filter:blur(18px);
+    border-bottom:1px solid rgba(255,255,255,.08);
+    z-index:1000;
+}
+
+.logo{
+    font-size:27px;
+    font-weight:700;
+    letter-spacing:1px;
+}
+
+.logo span{
+    color:#8f82ff;
+}
+
+nav ul{
+    display:flex;
+    list-style:none;
+    gap:30px;
+}
+
+nav ul li a{
+    color:#d8d8df;
+    text-decoration:none;
+    font-size:15px;
+    transition:.3s;
+}
+
+nav ul li a:hover{
+    color:#9c91ff;
+}
+
+/* HERO */
+.hero{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:120px 9% 70px;
+    text-align:center;
+}
+
+.hero-content{
+    max-width:850px;
+    animation:fadeIn 1s ease;
+}
+
+.welcome{
+    color:#9c91ff;
+    font-size:14px;
+    letter-spacing:4px;
+    margin-bottom:20px;
+}
+
+.hero h1{
+    font-size:clamp(48px,7vw,82px);
+    line-height:1.1;
+    margin-bottom:20px;
+    white-space:nowrap;
+}
+
+.hero h1 span{
+    color:#9c91ff;
+}
+
+.typing{
+    font-size:26px;
+    color:#e1e1e6;
+    min-height:38px;
+    margin-bottom:20px;
+}
+
+.cursor{
+    color:#9c91ff;
+    animation:blink .8s infinite;
+}
+
+.hero-description{
+    color:#aeb2c1;
+    font-size:17px;
+    line-height:1.8;
+    max-width:650px;
+    margin:auto;
+}
+
+/* BUTTONS */
+.buttons{
+    display:flex;
+    justify-content:center;
+    gap:15px;
+    margin-top:32px;
+    flex-wrap:wrap;
+}
+
+.btn{
+    padding:13px 24px;
+    border-radius:30px;
+    text-decoration:none;
+    font-weight:600;
+    transition:.3s;
+}
+
+.primary-btn{
+    background:#8f82ff;
+    color:white;
+    box-shadow:0 10px 30px rgba(143,130,255,.25);
+}
+
+.primary-btn:hover{
+    transform:translateY(-5px);
+    box-shadow:0 15px 35px rgba(143,130,255,.4);
+}
+
+.outline-btn{
+    border:1px solid #555a72;
+    color:white;
+}
+
+.outline-btn:hover{
+    border-color:#9c91ff;
+    background:rgba(143,130,255,.10);
+    transform:translateY(-5px);
+}
+
+/* SECTIONS */
+section{
+    padding:100px 9%;
+}
+
+.section-heading{
+    text-align:center;
+    margin-bottom:55px;
+}
+
+.section-heading small{
+    color:#9c91ff;
+    letter-spacing:4px;
+    text-transform:uppercase;
+}
+
+.section-heading h2{
+    font-size:42px;
+    margin-top:10px;
+}
+
+/* ABOUT */
+.about-card{
+    max-width:950px;
+    margin:auto;
+    padding:45px;
+    text-align:center;
+    background:rgba(255,255,255,.035);
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:25px;
+    line-height:1.9;
+    color:#b7bbc9;
+    transition:.4s;
+}
+
+.about-card:hover{
+    transform:translateY(-7px);
+    border-color:rgba(156,145,255,.4);
+}
+
+/* EDUCATION */
+.education-card{
+    max-width:900px;
+    margin:auto;
+    padding:38px;
+    background:rgba(255,255,255,.035);
+    border-left:4px solid #9c91ff;
+    border-radius:0 20px 20px 0;
+}
+
+.education-card h3{
+    font-size:27px;
+    margin-bottom:12px;
+}
+
+.education-card p{
+    color:#b5b9c7;
+    margin:7px 0;
+}
+
+.college{
+    color:#9c91ff !important;
+    font-weight:600;
+}
+
+.cgpa-badge{
+    display:inline-block;
+    margin-top:17px;
+    padding:8px 18px;
+    border-radius:25px;
+    background:rgba(143,130,255,.12);
+    color:#a9a0ff;
+}
+
+/* SKILLS */
+.skills-container{
+    max-width:900px;
+    margin:auto;
+    display:flex;
+    justify-content:center;
+    gap:16px;
+    flex-wrap:wrap;
+}
+
+.skill{
+    padding:15px 27px;
+    border-radius:30px;
+    background:rgba(255,255,255,.04);
+    border:1px solid rgba(255,255,255,.10);
+    color:#dddde4;
+    transition:.3s;
+}
+
+.skill:hover{
+    transform:translateY(-7px);
+    border-color:#9c91ff;
+    color:#a9a0ff;
+}
+
+/* PROJECT */
+.project-card{
+    max-width:1000px;
+    margin:auto;
+    padding:45px;
+    border-radius:25px;
+    background:linear-gradient(
+        135deg,
+        rgba(143,130,255,.13),
+        rgba(0,200,255,.04)
+    );
+    border:1px solid rgba(255,255,255,.09);
+    transition:.4s;
+}
+
+.project-card:hover{
+    transform:translateY(-8px);
+    box-shadow:0 25px 55px rgba(0,0,0,.25);
+}
+
+.project-label{
+    color:#9c91ff;
+    letter-spacing:3px;
+    font-size:13px;
+}
+
+.project-card h3{
+    font-size:31px;
+    margin:15px 0;
+}
+
+.project-card p{
+    color:#b5b9c7;
+    line-height:1.9;
+}
+
+.project-tags{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-top:25px;
+}
+
+.project-tags span{
+    padding:7px 13px;
+    border-radius:20px;
+    font-size:12px;
+    background:rgba(255,255,255,.07);
+    color:#c8c9d3;
+}
+
+/* CERTIFICATES */
+.certificate-container{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:20px;
+}
+
+.certificate{
+    width:230px;
+    padding:30px 20px;
+    text-align:center;
+    border-radius:20px;
+    background:rgba(255,255,255,.035);
+    border:1px solid rgba(255,255,255,.08);
+    transition:.3s;
+}
+
+.certificate:hover{
+    transform:translateY(-8px);
+    border-color:#9c91ff;
+}
+
+.certificate-icon{
+    font-size:35px;
+    margin-bottom:12px;
+}
+
+.certificate h3{
+    margin-bottom:8px;
+}
+
+.certificate p{
+    color:#9fa3b2;
+    font-size:14px;
+}
+
+/* CONTACT */
+.contact-box{
+    max-width:950px;
+    margin:auto;
+    text-align:center;
+    padding:55px 30px;
+    border-radius:28px;
+    background:rgba(255,255,255,.035);
+    border:1px solid rgba(255,255,255,.08);
+}
+
+.contact-box h2{
+    font-size:35px;
+    margin-bottom:12px;
+}
+
+.contact-box > p{
+    color:#aeb2c1;
+    margin-bottom:30px;
+}
+
+.contact-buttons{
+    display:flex;
+    justify-content:center;
+    gap:15px;
+    flex-wrap:wrap;
+}
+
+.contact-button{
+    padding:13px 20px;
+    border-radius:12px;
+    text-decoration:none;
+    color:white;
+    background:rgba(255,255,255,.045);
+    border:1px solid rgba(255,255,255,.1);
+    transition:.3s;
+}
+
+.contact-button:hover{
+    transform:translateY(-5px);
+    border-color:#9c91ff;
+    background:rgba(143,130,255,.12);
+}
+
+/* FOOTER */
+footer{
+    text-align:center;
+    padding:30px;
+    border-top:1px solid rgba(255,255,255,.07);
+    color:#777c8c;
+    font-size:14px;
+}
+
+/* ANIMATION */
+@keyframes fadeIn{
+    from{
+        opacity:0;
+        transform:translateY(30px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+@keyframes blink{
+    50%{
+        opacity:0;
+    }
+}
+
+/* MOBILE */
+@media(max-width:850px){
+
+    nav ul{
+        display:none;
+    }
+
+    .hero{
+        padding-left:6%;
+        padding-right:6%;
+    }
+
+    .hero h1{
+        font-size:clamp(38px,10vw,65px);
+    }
+
+    .typing{
+        font-size:21px;
+    }
+}
+
+@media(max-width:500px){
+
+    section{
+        padding:75px 6%;
+    }
+
+    .hero h1{
+        font-size:38px;
+    }
+
+    .about-card,
+    .project-card{
+        padding:28px;
+    }
+
+    .section-heading h2{
+        font-size:34px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAVIGATION -->
+<nav>
+    <div class="logo">
+        Saberna<span>.</span>
+    </div>
+
+    <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#education">Education</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#project">Project</a></li>
+        <li><a href="#certificates">Certificates</a></li>
+        <li><a href="#contact">Contact</a></li>
+    </ul>
+</nav>
+
+
+<!-- HOME -->
+<section class="hero" id="home">
+
+    <div class="hero-content">
+
+        <div class="welcome">
+            WELCOME TO MY PORTFOLIO
+        </div>
+
+        <h1>Hi, I'm <span>Saberna D</span></h1>
+
+        <div class="typing">
+            <span id="typingText"></span>
+            <span class="cursor">|</span>
+        </div>
+
+        <p class="hero-description">
+            I am an Information Technology student passionate about
+            web development, programming and emerging technologies.
+            I enjoy learning new skills and turning creative ideas
+            into meaningful digital experiences.
+        </p>
+
+        <div class="buttons">
+
+            <a href="#project" class="btn primary-btn">
+                View My Work
+            </a>
+
+            <a href="#contact" class="btn outline-btn">
+                Let's Connect
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ABOUT -->
+<section id="about">
+
+    <div class="section-heading">
+        <small>Get to know me</small>
+        <h2>About Me</h2>
+    </div>
+
+    <div class="about-card">
+
+        <p>
+            I am a B.Tech Information Technology student at Velalar
+            College of Engineering and Technology with a strong interest
+            in web development and emerging technologies. I enjoy
+            creating user-friendly and visually appealing digital
+            experiences using HTML, CSS and JavaScript. I also have a
+            foundation in C programming and Java. I am continuously
+            learning new technologies, improving my technical skills and
+            exploring innovative ideas that can solve real-world
+            problems. My goal is to grow as a skilled and creative
+            software developer.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- EDUCATION -->
+<section id="education">
+
+    <div class="section-heading">
+        <small>My academic journey</small>
+        <h2>Education</h2>
+    </div>
+
+    <div class="education-card">
+
+        <h3>B.Tech Information Technology</h3>
+
+        <p class="college">
+            Velalar College of Engineering and Technology
+        </p>
+
+        <p>
+            Bachelor of Technology — Information Technology
+        </p>
+
+        <div class="cgpa-badge">
+            CGPA : 8.31
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- SKILLS -->
+<section id="skills">
+
+    <div class="section-heading">
+        <small>What I work with</small>
+        <h2>Technical Skills</h2>
+    </div>
+
+    <div class="skills-container">
+
+        <div class="skill">HTML</div>
+        <div class="skill">CSS</div>
+        <div class="skill">JavaScript</div>
+        <div class="skill">C Programming</div>
+        <div class="skill">Java Basics</div>
+
+    </div>
+
+</section>
+
+
+<!-- PROJECT -->
+<section id="project">
+
+    <div class="section-heading">
+        <small>Featured work</small>
+        <h2>My Project</h2>
+    </div>
+
+    <div class="project-card">
+
+        <div class="project-label">
+            PROJECT 01
+        </div>
+
+        <h3>
+            Nanorobotics in Cancer Therapy
+        </h3>
+
+        <p>
+            Nanorobotics in cancer therapy is an emerging field that
+            explores the use of nanoscale robotic systems for targeted
+            cancer treatment. The concept focuses on delivering
+            therapeutic agents more precisely toward tumour regions,
+            with the aim of improving treatment efficiency and reducing
+            unwanted effects on healthy tissues. This project explores
+            the potential of nanorobotics as an innovative approach in
+            modern cancer therapy.
+        </p>
+
+        <div class="project-tags">
+            <span>Nanotechnology</span>
+            <span>Cancer Therapy</span>
+            <span>Targeted Treatment</span>
+            <span>Emerging Technology</span>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- CERTIFICATES -->
+<section id="certificates">
+
+    <div class="section-heading">
+        <small>Learning & development</small>
+        <h2>Certifications</h2>
+    </div>
+
+    <div class="certificate-container">
+
+        <div class="certificate">
+            <div class="certificate-icon">🎓</div>
+            <h3>Infosys</h3>
+            <p>Certified Learning</p>
+        </div>
+
+        <div class="certificate">
+            <div class="certificate-icon">📚</div>
+            <h3>Coursera</h3>
+            <p>Online Certification</p>
+        </div>
+
+        <div class="certificate">
+            <div class="certificate-icon">🏆</div>
+            <h3>NPTEL</h3>
+            <p>Online Certification</p>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- CONTACT -->
+<section id="contact">
+
+    <div class="section-heading">
+        <small>Let's connect</small>
+        <h2>Get In Touch</h2>
+    </div>
+
+    <div class="contact-box">
+
+        <h2>Let's build something meaningful.</h2>
+
+        <p>
+            Feel free to connect with me through my professional
+            profiles or contact me directly.
+        </p>
+
+        <div class="contact-buttons">
+
+            <a
+                href="https://github.com/saberna-2006"
+                target="_blank"
+                class="contact-button">
+                💻 GitHub
+            </a>
+
+            <a
+                href="https://www.linkedin.com/in/saberna-d-5069ba331/"
+                target="_blank"
+                class="contact-button">
+                🔗 LinkedIn
+            </a>
+
+            <a
+                href="mailto:saberna2305@gmail.com"
+                class="contact-button">
+                ✉️ Email
+            </a>
+
+            <a
+                href="tel:6380313789"
+                class="contact-button">
+                📞 Call Me
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- FOOTER -->
+<footer>
+    © 2026 Saberna D · B.Tech IT Student ·
+    Built with HTML, CSS & JavaScript
+</footer>
+
+
+<!-- JAVASCRIPT -->
+<script>
+
+const texts = [
+    "B.Tech IT Student",
+    "Aspiring Full Stack Developer",
+    "Creative Learner"
+];
+
+let textIndex = 0;
+let characterIndex = 0;
+let deleting = false;
+
+const typingText = document.getElementById("typingText");
+
+function typeEffect(){
+
+    const currentText = texts[textIndex];
+
+    if(!deleting){
+
+        typingText.textContent =
+            currentText.substring(0, characterIndex + 1);
+
+        characterIndex++;
+
+        if(characterIndex === currentText.length){
+
+            deleting = true;
+
+            setTimeout(typeEffect, 1500);
+            return;
+        }
+
+    }else{
+
+        typingText.textContent =
+            currentText.substring(0, characterIndex - 1);
+
+        characterIndex--;
+
+        if(characterIndex === 0){
+
+            deleting = false;
+            textIndex++;
+
+            if(textIndex === texts.length){
+                textIndex = 0;
+            }
+        }
+    }
+
+    setTimeout(typeEffect, deleting ? 50 : 90);
+}
+
+typeEffect();
+
+
+/* ACTIVE NAVIGATION */
+
+const sections = document.querySelectorAll("section");
+const navLinks = document.querySelectorAll("nav ul li a");
+
+window.addEventListener("scroll", () => {
+
+    let currentSection = "";
+
+    sections.forEach(section => {
+
+        const sectionTop = section.offsetTop - 150;
+
+        if(window.scrollY >= sectionTop){
+            currentSection = section.getAttribute("id");
+        }
+
+    });
+
+    navLinks.forEach(link => {
+
+        link.style.color = "#d8d8df";
+
+        if(link.getAttribute("href") === "#" + currentSection){
+            link.style.color = "#9c91ff";
+        }
+
+    });
+
+});
+
+console.log("Welcome to Saberna D's Portfolio!");
+
+</script>
+
+</body>
+</html>
