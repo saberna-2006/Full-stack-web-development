@@ -1,0 +1,1256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LeaveFlow - Leave Management</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:#f4f7fb;
+    color:#172033;
+}
+
+/* SIDEBAR */
+.sidebar{
+    position:fixed;
+    left:0;
+    top:0;
+    width:245px;
+    height:100vh;
+    background:#172554;
+    color:white;
+    padding:25px 18px;
+    z-index:10;
+}
+
+.logo{
+    font-size:25px;
+    font-weight:bold;
+    padding:10px 12px 30px;
+}
+
+.logo span{
+    color:#60a5fa;
+}
+
+.menu-title{
+    font-size:11px;
+    color:#94a3b8;
+    margin:20px 12px 10px;
+    text-transform:uppercase;
+}
+
+.menu button{
+    width:100%;
+    background:none;
+    border:0;
+    color:#cbd5e1;
+    padding:13px 14px;
+    text-align:left;
+    border-radius:9px;
+    cursor:pointer;
+    font-size:14px;
+    margin-bottom:4px;
+}
+
+.menu button:hover,
+.menu button.active{
+    background:#2563eb;
+    color:white;
+}
+
+.user{
+    position:absolute;
+    bottom:20px;
+    left:18px;
+    right:18px;
+    border-top:1px solid #334155;
+    padding-top:15px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.avatar{
+    width:38px;
+    height:38px;
+    border-radius:50%;
+    background:#60a5fa;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:bold;
+    color:#172554;
+}
+
+.user small{
+    color:#94a3b8;
+}
+
+/* MAIN */
+.main{
+    margin-left:245px;
+    min-height:100vh;
+}
+
+.topbar{
+    height:70px;
+    background:white;
+    border-bottom:1px solid #e5e7eb;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 35px;
+}
+
+.topbar h2{
+    font-size:20px;
+}
+
+.top-actions{
+    display:flex;
+    gap:18px;
+    align-items:center;
+}
+
+.icon-btn{
+    border:0;
+    background:#f1f5f9;
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    cursor:pointer;
+    font-size:17px;
+}
+
+.content{
+    padding:32px;
+}
+
+.page{
+    display:none;
+}
+
+.page.active{
+    display:block;
+}
+
+/* DASHBOARD */
+.welcome{
+    background:linear-gradient(120deg,#2563eb,#4f46e5);
+    color:white;
+    border-radius:18px;
+    padding:28px;
+    margin-bottom:25px;
+}
+
+.welcome h1{
+    font-size:27px;
+    margin-bottom:8px;
+}
+
+.welcome p{
+    color:#dbeafe;
+}
+
+.apply-btn{
+    margin-top:20px;
+    padding:12px 20px;
+    border:0;
+    border-radius:8px;
+    background:white;
+    color:#2563eb;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:18px;
+    margin-bottom:28px;
+}
+
+.stat-card{
+    background:white;
+    padding:22px;
+    border-radius:14px;
+    box-shadow:0 3px 12px rgba(0,0,0,.05);
+}
+
+.stat-top{
+    display:flex;
+    justify-content:space-between;
+    color:#64748b;
+    font-size:13px;
+}
+
+.stat-card h2{
+    margin-top:15px;
+    font-size:28px;
+}
+
+.stat-icon{
+    font-size:25px;
+}
+
+.dashboard-grid{
+    display:grid;
+    grid-template-columns:2fr 1fr;
+    gap:20px;
+}
+
+.box{
+    background:white;
+    border-radius:14px;
+    padding:22px;
+    box-shadow:0 3px 12px rgba(0,0,0,.05);
+}
+
+.box h3{
+    margin-bottom:18px;
+}
+
+.leave-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:15px 0;
+    border-bottom:1px solid #eef2f7;
+}
+
+.badge{
+    padding:6px 11px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:bold;
+}
+
+.approved{
+    background:#dcfce7;
+    color:#15803d;
+}
+
+.pending{
+    background:#fef3c7;
+    color:#b45309;
+}
+
+.rejected{
+    background:#fee2e2;
+    color:#dc2626;
+}
+
+/* FORM */
+.form-box{
+    background:white;
+    max-width:750px;
+    padding:28px;
+    border-radius:15px;
+    box-shadow:0 3px 15px rgba(0,0,0,.06);
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+}
+
+.form-group{
+    margin-bottom:5px;
+}
+
+.form-group.full{
+    grid-column:1/-1;
+}
+
+label{
+    display:block;
+    font-size:13px;
+    font-weight:bold;
+    margin-bottom:7px;
+}
+
+input,select,textarea{
+    width:100%;
+    padding:12px;
+    border:1px solid #dbe2ea;
+    border-radius:8px;
+    outline:none;
+}
+
+textarea{
+    height:110px;
+    resize:none;
+}
+
+.primary{
+    background:#2563eb;
+    color:white;
+    border:0;
+    padding:13px 22px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.secondary{
+    background:#e2e8f0;
+    border:0;
+    padding:13px 22px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+/* TABLE */
+.table-box{
+    background:white;
+    border-radius:14px;
+    overflow:hidden;
+    box-shadow:0 3px 12px rgba(0,0,0,.05);
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th,td{
+    padding:16px;
+    text-align:left;
+    border-bottom:1px solid #edf0f4;
+    font-size:14px;
+}
+
+th{
+    background:#f8fafc;
+    color:#64748b;
+}
+
+.action{
+    border:0;
+    background:#eff6ff;
+    color:#2563eb;
+    padding:7px 11px;
+    border-radius:6px;
+    cursor:pointer;
+}
+
+/* BALANCE */
+.balance-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
+}
+
+.balance-card{
+    background:white;
+    padding:25px;
+    border-radius:15px;
+    box-shadow:0 3px 12px rgba(0,0,0,.05);
+}
+
+.progress{
+    height:8px;
+    background:#e2e8f0;
+    border-radius:10px;
+    margin-top:15px;
+    overflow:hidden;
+}
+
+.progress div{
+    height:100%;
+    background:#2563eb;
+    border-radius:10px;
+}
+
+/* CALENDAR */
+.calendar{
+    background:white;
+    padding:25px;
+    border-radius:15px;
+}
+
+.calendar-grid{
+    display:grid;
+    grid-template-columns:repeat(7,1fr);
+    gap:8px;
+    margin-top:20px;
+}
+
+.day{
+    padding:15px;
+    background:#f8fafc;
+    text-align:center;
+    border-radius:8px;
+}
+
+.day.head{
+    background:#172554;
+    color:white;
+    font-weight:bold;
+}
+
+.day.leave{
+    background:#dbeafe;
+    color:#1d4ed8;
+    font-weight:bold;
+}
+
+/* NOTIFICATION */
+.notification{
+    background:white;
+    padding:18px;
+    border-radius:12px;
+    margin-bottom:12px;
+    display:flex;
+    gap:15px;
+    align-items:center;
+    box-shadow:0 2px 8px rgba(0,0,0,.04);
+}
+
+.notification-icon{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    background:#dbeafe;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+/* PROFILE */
+.profile-box{
+    background:white;
+    max-width:650px;
+    padding:35px;
+    border-radius:16px;
+    text-align:center;
+    margin:auto;
+}
+
+.big-avatar{
+    width:90px;
+    height:90px;
+    border-radius:50%;
+    background:#2563eb;
+    color:white;
+    margin:0 auto 15px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:35px;
+    font-weight:bold;
+}
+
+.profile-info{
+    margin-top:25px;
+    text-align:left;
+}
+
+.info-row{
+    display:flex;
+    justify-content:space-between;
+    padding:15px 0;
+    border-bottom:1px solid #edf0f4;
+}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+
+    .sidebar{
+        width:190px;
+    }
+
+    .main{
+        margin-left:190px;
+    }
+
+    .stats{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .dashboard-grid{
+        grid-template-columns:1fr;
+    }
+}
+
+@media(max-width:650px){
+
+    .sidebar{
+        position:relative;
+        width:100%;
+        height:auto;
+    }
+
+    .user{
+        position:static;
+        margin-top:20px;
+    }
+
+    .main{
+        margin-left:0;
+    }
+
+    .topbar{
+        padding:0 15px;
+    }
+
+    .content{
+        padding:18px;
+    }
+
+    .stats,
+    .balance-grid{
+        grid-template-columns:1fr;
+    }
+
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .form-group.full{
+        grid-column:auto;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+
+<aside class="sidebar">
+
+    <div class="logo">
+        Leave<span>Flow</span>
+    </div>
+
+    <div class="menu-title">Main Menu</div>
+
+    <div class="menu">
+
+        <button class="active" onclick="showPage('dashboard',this)">
+            🏠 Dashboard
+        </button>
+
+        <button onclick="showPage('apply',this)">
+            📝 Apply Leave
+        </button>
+
+        <button onclick="showPage('myleaves',this)">
+            📋 My Leaves
+        </button>
+
+        <button onclick="showPage('balance',this)">
+            📊 Leave Balance
+        </button>
+
+        <button onclick="showPage('calendar',this)">
+            📅 Calendar
+        </button>
+
+    </div>
+
+    <div class="menu-title">Others</div>
+
+    <div class="menu">
+
+        <button onclick="showPage('notifications',this)">
+            🔔 Notifications
+        </button>
+
+        <button onclick="showPage('profile',this)">
+            👤 My Profile
+        </button>
+
+        <button onclick="showPage('settings',this)">
+            ⚙️ Settings
+        </button>
+
+    </div>
+
+    <div class="user">
+
+        <div class="avatar">S</div>
+
+        <div>
+            <b>Saberna D</b><br>
+            <small>Employee</small>
+        </div>
+
+    </div>
+
+</aside>
+
+
+<!-- MAIN -->
+
+<main class="main">
+
+<header class="topbar">
+
+    <h2 id="pageTitle">Dashboard</h2>
+
+    <div class="top-actions">
+
+        <button class="icon-btn" onclick="showPage('notifications')">
+            🔔
+        </button>
+
+        <button class="icon-btn" onclick="showPage('profile')">
+            👤
+        </button>
+
+    </div>
+
+</header>
+
+
+<div class="content">
+
+
+<!-- DASHBOARD -->
+
+<section id="dashboard" class="page active">
+
+    <div class="welcome">
+
+        <h1>Good Morning, Saber­na! 👋</h1>
+
+        <p>
+            Manage your leaves easily and keep track of your time off.
+        </p>
+
+        <button class="apply-btn"
+        onclick="showPage('apply')">
+            + Apply for Leave
+        </button>
+
+    </div>
+
+
+    <div class="stats">
+
+        <div class="stat-card">
+            <div class="stat-top">
+                <span>Total Leaves</span>
+                <span class="stat-icon">📅</span>
+            </div>
+            <h2>24</h2>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-top">
+                <span>Used Leaves</span>
+                <span class="stat-icon">📤</span>
+            </div>
+            <h2>08</h2>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-top">
+                <span>Available</span>
+                <span class="stat-icon">✅</span>
+            </div>
+            <h2>16</h2>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-top">
+                <span>Pending</span>
+                <span class="stat-icon">⏳</span>
+            </div>
+            <h2>02</h2>
+        </div>
+
+    </div>
+
+
+    <div class="dashboard-grid">
+
+        <div class="box">
+
+            <h3>Recent Leave Requests</h3>
+
+            <div class="leave-row">
+                <div>
+                    <b>Casual Leave</b><br>
+                    <small>12 Sep - 13 Sep 2026</small>
+                </div>
+                <span class="badge pending">Pending</span>
+            </div>
+
+            <div class="leave-row">
+                <div>
+                    <b>Medical Leave</b><br>
+                    <small>02 Sep - 03 Sep 2026</small>
+                </div>
+                <span class="badge approved">Approved</span>
+            </div>
+
+            <div class="leave-row">
+                <div>
+                    <b>Casual Leave</b><br>
+                    <small>20 Aug 2026</small>
+                </div>
+                <span class="badge approved">Approved</span>
+            </div>
+
+        </div>
+
+
+        <div class="box">
+
+            <h3>Quick Actions</h3>
+
+            <button class="primary"
+            onclick="showPage('apply')"
+            style="width:100%;margin-bottom:12px;">
+                📝 Apply Leave
+            </button>
+
+            <button class="secondary"
+            onclick="showPage('balance')"
+            style="width:100%;margin-bottom:12px;">
+                📊 Check Balance
+            </button>
+
+            <button class="secondary"
+            onclick="showPage('calendar')"
+            style="width:100%;">
+                📅 View Calendar
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- APPLY LEAVE -->
+
+<section id="apply" class="page">
+
+    <h1 style="margin-bottom:22px;">Apply for Leave</h1>
+
+    <div class="form-box">
+
+        <div class="form-grid">
+
+            <div class="form-group">
+                <label>Leave Type</label>
+
+                <select id="leaveType">
+                    <option>Casual Leave</option>
+                    <option>Medical Leave</option>
+                    <option>Earned Leave</option>
+                    <option>Emergency Leave</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Duration</label>
+
+                <select id="duration">
+                    <option>Full Day</option>
+                    <option>Half Day</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>From Date</label>
+                <input type="date" id="fromDate">
+            </div>
+
+            <div class="form-group">
+                <label>To Date</label>
+                <input type="date" id="toDate">
+            </div>
+
+            <div class="form-group full">
+                <label>Reason</label>
+
+                <textarea id="reason"
+                placeholder="Enter reason for your leave..."></textarea>
+            </div>
+
+        </div>
+
+        <br>
+
+        <button class="primary" onclick="submitLeave()">
+            Submit Leave Request
+        </button>
+
+        <button class="secondary"
+        onclick="showPage('dashboard')"
+        style="margin-left:8px;">
+            Cancel
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- MY LEAVES -->
+
+<section id="myleaves" class="page">
+
+    <h1 style="margin-bottom:22px;">My Leave Requests</h1>
+
+    <div class="table-box">
+
+        <table>
+
+            <tr>
+                <th>Leave Type</th>
+                <th>From</th>
+                <th>To</th>
+                <th>Days</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+
+            <tr>
+                <td>Casual Leave</td>
+                <td>12 Sep</td>
+                <td>13 Sep</td>
+                <td>2</td>
+                <td>
+                    <span class="badge pending">Pending</span>
+                </td>
+                <td>
+                    <button class="action"
+                    onclick="viewLeave('Casual Leave','12 Sep','13 Sep','Pending')">
+                    View
+                    </button>
+                </td>
+            </tr>
+
+            <tr>
+                <td>Medical Leave</td>
+                <td>02 Sep</td>
+                <td>03 Sep</td>
+                <td>2</td>
+                <td>
+                    <span class="badge approved">Approved</span>
+                </td>
+                <td>
+                    <button class="action"
+                    onclick="viewLeave('Medical Leave','02 Sep','03 Sep','Approved')">
+                    View
+                    </button>
+                </td>
+            </tr>
+
+            <tr>
+                <td>Casual Leave</td>
+                <td>20 Aug</td>
+                <td>20 Aug</td>
+                <td>1</td>
+                <td>
+                    <span class="badge approved">Approved</span>
+                </td>
+                <td>
+                    <button class="action"
+                    onclick="viewLeave('Casual Leave','20 Aug','20 Aug','Approved')">
+                    View
+                    </button>
+                </td>
+            </tr>
+
+        </table>
+
+    </div>
+
+</section>
+
+
+<!-- BALANCE -->
+
+<section id="balance" class="page">
+
+    <h1 style="margin-bottom:22px;">Leave Balance</h1>
+
+    <div class="balance-grid">
+
+        <div class="balance-card">
+
+            <h3>Casual Leave</h3>
+
+            <h1 style="margin-top:15px;">08 / 12</h1>
+
+            <p style="color:#64748b;margin-top:5px;">
+                8 days remaining
+            </p>
+
+            <div class="progress">
+                <div style="width:67%"></div>
+            </div>
+
+        </div>
+
+
+        <div class="balance-card">
+
+            <h3>Medical Leave</h3>
+
+            <h1 style="margin-top:15px;">05 / 08</h1>
+
+            <p style="color:#64748b;margin-top:5px;">
+                5 days remaining
+            </p>
+
+            <div class="progress">
+                <div style="width:63%"></div>
+            </div>
+
+        </div>
+
+
+        <div class="balance-card">
+
+            <h3>Earned Leave</h3>
+
+            <h1 style="margin-top:15px;">03 / 04</h1>
+
+            <p style="color:#64748b;margin-top:5px;">
+                3 days remaining
+            </p>
+
+            <div class="progress">
+                <div style="width:75%"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- CALENDAR -->
+
+<section id="calendar" class="page">
+
+    <h1 style="margin-bottom:22px;">Leave Calendar</h1>
+
+    <div class="calendar">
+
+        <h2 style="text-align:center;">
+            September 2026
+        </h2>
+
+        <div class="calendar-grid">
+
+            <div class="day head">Sun</div>
+            <div class="day head">Mon</div>
+            <div class="day head">Tue</div>
+            <div class="day head">Wed</div>
+            <div class="day head">Thu</div>
+            <div class="day head">Fri</div>
+            <div class="day head">Sat</div>
+
+            <div></div>
+            <div></div>
+            <div>1</div>
+            <div>2</div>
+            <div>3</div>
+            <div>4</div>
+            <div>5</div>
+
+            <div>6</div>
+            <div>7</div>
+            <div>8</div>
+            <div>9</div>
+            <div>10</div>
+            <div>11</div>
+            <div class="day leave">12</div>
+
+            <div class="day leave">13</div>
+            <div>14</div>
+            <div>15</div>
+            <div>16</div>
+            <div>17</div>
+            <div>18</div>
+            <div>19</div>
+
+            <div>20</div>
+            <div>21</div>
+            <div>22</div>
+            <div>23</div>
+            <div>24</div>
+            <div>25</div>
+            <div>26</div>
+
+            <div>27</div>
+            <div>28</div>
+            <div>29</div>
+            <div>30</div>
+
+        </div>
+
+        <p style="margin-top:20px;">
+            🔵 <b>Blue dates</b> indicate your leave days.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- NOTIFICATIONS -->
+
+<section id="notifications" class="page">
+
+    <h1 style="margin-bottom:22px;">Notifications</h1>
+
+    <div class="notification">
+
+        <div class="notification-icon">✅</div>
+
+        <div>
+            <b>Leave Approved</b>
+            <p>Your medical leave request has been approved.</p>
+            <small>2 hours ago</small>
+        </div>
+
+    </div>
+
+
+    <div class="notification">
+
+        <div class="notification-icon">⏳</div>
+
+        <div>
+            <b>Leave Pending</b>
+            <p>Your casual leave request is waiting for approval.</p>
+            <small>Yesterday</small>
+        </div>
+
+    </div>
+
+
+    <div class="notification">
+
+        <div class="notification-icon">📢</div>
+
+        <div>
+            <b>Company Announcement</b>
+            <p>Leave applications for the upcoming month are open.</p>
+            <small>2 days ago</small>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- PROFILE -->
+
+<section id="profile" class="page">
+
+    <div class="profile-box">
+
+        <div class="big-avatar">S</div>
+
+        <h2>Saberna D</h2>
+
+        <p style="color:#64748b;">
+            Employee ID: EMP1024
+        </p>
+
+        <div class="profile-info">
+
+            <div class="info-row">
+                <b>Email</b>
+                <span>saberna2305@gmail.com</span>
+            </div>
+
+            <div class="info-row">
+                <b>Department</b>
+                <span>Information Technology</span>
+            </div>
+
+            <div class="info-row">
+                <b>Role</b>
+                <span>Software Trainee</span>
+            </div>
+
+            <div class="info-row">
+                <b>Manager</b>
+                <span>Lokeshwaran</span>
+            </div>
+
+        </div>
+
+        <br>
+
+        <button class="primary"
+        onclick="editProfile()">
+            Edit Profile
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- SETTINGS -->
+
+<section id="settings" class="page">
+
+    <h1 style="margin-bottom:22px;">Settings</h1>
+
+    <div class="form-box">
+
+        <h3>Account Settings</h3>
+
+        <br>
+
+        <label>Email Notifications</label>
+
+        <select>
+            <option>Enabled</option>
+            <option>Disabled</option>
+        </select>
+
+        <br><br>
+
+        <label>Language</label>
+
+        <select>
+            <option>English</option>
+            <option>Tamil</option>
+        </select>
+
+        <br><br>
+
+        <button class="primary"
+        onclick="saveSettings()">
+            Save Settings
+        </button>
+
+    </div>
+
+</section>
+
+
+</div>
+</main>
+
+
+<script>
+
+function showPage(pageId,button){
+
+    document.querySelectorAll(".page").forEach(page=>{
+        page.classList.remove("active");
+    });
+
+    document.getElementById(pageId).classList.add("active");
+
+    document.querySelectorAll(".menu button").forEach(btn=>{
+        btn.classList.remove("active");
+    });
+
+    if(button){
+        button.classList.add("active");
+    }
+
+    let titles={
+        dashboard:"Dashboard",
+        apply:"Apply Leave",
+        myleaves:"My Leaves",
+        balance:"Leave Balance",
+        calendar:"Leave Calendar",
+        notifications:"Notifications",
+        profile:"My Profile",
+        settings:"Settings"
+    };
+
+    document.getElementById("pageTitle").innerText=
+        titles[pageId];
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+}
+
+
+function submitLeave(){
+
+    let type=document.getElementById("leaveType").value;
+    let from=document.getElementById("fromDate").value;
+    let to=document.getElementById("toDate").value;
+    let reason=document.getElementById("reason").value;
+
+    if(from==="" || to==="" || reason===""){
+
+        alert("Please fill all the required fields.");
+        return;
+    }
+
+    alert(
+        "Leave request submitted successfully! ✅\n\n"+
+        "Type: "+type+"\n"+
+        "From: "+from+"\n"+
+        "To: "+to
+    );
+
+    document.getElementById("fromDate").value="";
+    document.getElementById("toDate").value="";
+    document.getElementById("reason").value="";
+
+    showPage("myleaves");
+}
+
+
+function viewLeave(type,from,to,status){
+
+    alert(
+        "Leave Details\n\n"+
+        "Type: "+type+"\n"+
+        "From: "+from+"\n"+
+        "To: "+to+"\n"+
+        "Status: "+status
+    );
+}
+
+
+function editProfile(){
+
+    let name=prompt(
+        "Enter your name:",
+        "Saberna D"
+    );
+
+    if(name){
+        alert("Profile updated successfully! ✅");
+    }
+}
+
+
+function saveSettings(){
+
+    alert("Settings saved successfully! ⚙️");
+
+}
+
+
+</script>
+
+</body>
+</html>
