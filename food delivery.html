@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FoodieGo - Food Delivery</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:#f8f9fc;
+    color:#222;
+}
+
+header{
+    background:#ffffff;
+    padding:18px 7%;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    box-shadow:0 2px 12px rgba(0,0,0,.08);
+    position:sticky;
+    top:0;
+    z-index:100;
+}
+
+.logo{
+    font-size:27px;
+    font-weight:bold;
+    color:#ff4d4d;
+}
+
+.logo span{
+    color:#222;
+}
+
+nav a{
+    text-decoration:none;
+    color:#333;
+    margin:0 12px;
+    font-weight:600;
+    cursor:pointer;
+}
+
+nav a:hover{
+    color:#ff4d4d;
+}
+
+.cart-btn{
+    background:#ff4d4d;
+    color:white;
+    border:none;
+    padding:11px 18px;
+    border-radius:25px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.hero{
+    min-height:430px;
+    padding:70px 7%;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    background:linear-gradient(120deg,#fff1ed,#fff9f4);
+}
+
+.hero-text{
+    max-width:560px;
+}
+
+.hero h1{
+    font-size:52px;
+    line-height:1.1;
+    margin-bottom:18px;
+}
+
+.hero h1 span{
+    color:#ff4d4d;
+}
+
+.hero p{
+    color:#666;
+    font-size:18px;
+    line-height:1.6;
+    margin-bottom:25px;
+}
+
+.hero button{
+    padding:14px 25px;
+    border:none;
+    background:#ff4d4d;
+    color:white;
+    border-radius:28px;
+    font-size:16px;
+    cursor:pointer;
+}
+
+.hero-food{
+    font-size:170px;
+    animation:float 3s infinite ease-in-out;
+}
+
+@keyframes float{
+    50%{transform:translateY(-15px);}
+}
+
+section{
+    padding:55px 7%;
+}
+
+.section-title{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.section-title h2{
+    font-size:32px;
+    margin-bottom:8px;
+}
+
+.section-title p{
+    color:#777;
+}
+
+.categories{
+    display:flex;
+    justify-content:center;
+    gap:18px;
+    flex-wrap:wrap;
+}
+
+.category{
+    background:white;
+    padding:18px 25px;
+    border-radius:15px;
+    box-shadow:0 3px 15px rgba(0,0,0,.08);
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.category:hover{
+    transform:translateY(-4px);
+    color:#ff4d4d;
+}
+
+.restaurants{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:25px;
+}
+
+.card{
+    background:white;
+    border-radius:18px;
+    overflow:hidden;
+    box-shadow:0 5px 20px rgba(0,0,0,.08);
+    transition:.3s;
+}
+
+.card:hover{
+    transform:translateY(-7px);
+}
+
+.food-img{
+    height:160px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:85px;
+    background:#fff1ed;
+}
+
+.card-content{
+    padding:20px;
+}
+
+.card-content h3{
+    margin-bottom:7px;
+}
+
+.rating{
+    color:#f39c12;
+    margin-bottom:8px;
+}
+
+.card-content p{
+    color:#777;
+    font-size:14px;
+    margin-bottom:15px;
+}
+
+.card-content button{
+    width:100%;
+    padding:11px;
+    border:none;
+    border-radius:10px;
+    background:#ff4d4d;
+    color:white;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.search-box{
+    max-width:600px;
+    margin:0 auto 35px;
+    display:flex;
+}
+
+.search-box input{
+    width:100%;
+    padding:15px;
+    border:1px solid #ddd;
+    border-radius:12px;
+    outline:none;
+    font-size:15px;
+}
+
+.dashboard{
+    background:#181818;
+    color:white;
+    border-radius:25px;
+    padding:35px;
+}
+
+.dashboard h2{
+    margin-bottom:25px;
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:18px;
+}
+
+.stat{
+    background:#292929;
+    padding:25px;
+    border-radius:16px;
+}
+
+.stat h3{
+    font-size:28px;
+    margin-bottom:5px;
+}
+
+.stat p{
+    color:#bbb;
+}
+
+.owner-buttons{
+    margin-top:25px;
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+}
+
+.owner-buttons button{
+    padding:12px 20px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+}
+
+.owner-buttons button:first-child{
+    background:#ff4d4d;
+    color:white;
+}
+
+.owner-buttons button:last-child{
+    background:white;
+    color:#222;
+}
+
+#cart{
+    display:none;
+    position:fixed;
+    right:20px;
+    top:80px;
+    width:340px;
+    max-width:90%;
+    background:white;
+    padding:25px;
+    border-radius:18px;
+    box-shadow:0 8px 30px rgba(0,0,0,.2);
+    z-index:200;
+}
+
+#cart h2{
+    margin-bottom:15px;
+}
+
+.cart-item{
+    padding:12px 0;
+    border-bottom:1px solid #eee;
+}
+
+.total{
+    font-size:20px;
+    font-weight:bold;
+    margin:18px 0;
+}
+
+.checkout{
+    width:100%;
+    padding:12px;
+    border:none;
+    background:#ff4d4d;
+    color:white;
+    border-radius:10px;
+    cursor:pointer;
+}
+
+footer{
+    background:#181818;
+    color:white;
+    text-align:center;
+    padding:30px;
+    margin-top:30px;
+}
+
+@media(max-width:800px){
+    nav{
+        display:none;
+    }
+
+    .hero{
+        text-align:center;
+        flex-direction:column;
+        gap:30px;
+    }
+
+    .hero h1{
+        font-size:40px;
+    }
+
+    .hero-food{
+        font-size:100px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">Foodie<span>Go</span> 🍴</div>
+
+    <nav>
+        <a onclick="goHome()">Home</a>
+        <a onclick="showRestaurants()">Restaurants</a>
+        <a onclick="showOwner()">Owner</a>
+        <a onclick="showOrders()">Orders</a>
+    </nav>
+
+    <button class="cart-btn" onclick="toggleCart()">
+        🛒 Cart <span id="cartCount">0</span>
+    </button>
+
+</header>
+
+
+<!-- HOME -->
+
+<div id="home">
+
+<section class="hero">
+
+    <div class="hero-text">
+
+        <h1>Good food.<br>
+        <span>Good mood.</span></h1>
+
+        <p>
+            Discover delicious meals from your favourite restaurants
+            and get them delivered fresh to your doorstep.
+        </p>
+
+        <button onclick="showRestaurants()">
+            Explore Food →
+        </button>
+
+    </div>
+
+    <div class="hero-food">🍔</div>
+
+</section>
+
+
+<section>
+
+    <div class="section-title">
+        <h2>Explore Categories</h2>
+        <p>Choose what you are craving today</p>
+    </div>
+
+    <div class="categories">
+
+        <div class="category" onclick="filterFood('Pizza')">🍕 Pizza</div>
+        <div class="category" onclick="filterFood('Burger')">🍔 Burger</div>
+        <div class="category" onclick="filterFood('Indian')">🍛 Indian</div>
+        <div class="category" onclick="filterFood('Dessert')">🍰 Dessert</div>
+        <div class="category" onclick="filterFood('Drinks')">🥤 Drinks</div>
+
+    </div>
+
+</section>
+
+</div>
+
+
+<!-- RESTAURANTS -->
+
+<section id="restaurantSection">
+
+    <div class="section-title">
+        <h2>Popular Restaurants</h2>
+        <p>Top-rated restaurants near you</p>
+    </div>
+
+    <div class="search-box">
+        <input
+            type="text"
+            id="search"
+            placeholder="🔍 Search food or restaurant..."
+            onkeyup="searchFood()">
+    </div>
+
+    <div class="restaurants" id="foodList">
+
+        <div class="card food-card" data-name="Pizza Italian">
+            <div class="food-img">🍕</div>
+            <div class="card-content">
+                <h3>Cheesy Italian Pizza</h3>
+                <div class="rating">★★★★★ 4.8</div>
+                <p>Fresh mozzarella, vegetables & Italian herbs.</p>
+                <button onclick="addToCart('Cheesy Italian Pizza',249)">
+                    Add to Cart ₹249
+                </button>
+            </div>
+        </div>
+
+
+        <div class="card food-card" data-name="Burger">
+            <div class="food-img">🍔</div>
+            <div class="card-content">
+                <h3>Classic Cheese Burger</h3>
+                <div class="rating">★★★★★ 4.7</div>
+                <p>Juicy patty with cheese, lettuce and special sauce.</p>
+                <button onclick="addToCart('Classic Cheese Burger',179)">
+                    Add to Cart ₹179
+                </button>
+            </div>
+        </div>
+
+
+        <div class="card food-card" data-name="Indian Biryani">
+            <div class="food-img">🍛</div>
+            <div class="card-content">
+                <h3>Royal Chicken Biryani</h3>
+                <div class="rating">★★★★★ 4.9</div>
+                <p>Fragrant basmati rice with delicious Indian spices.</p>
+                <button onclick="addToCart('Royal Chicken Biryani',299)">
+                    Add to Cart ₹299
+                </button>
+            </div>
+        </div>
+
+
+        <div class="card food-card" data-name="Dessert Cake">
+            <div class="food-img">🍰</div>
+            <div class="card-content">
+                <h3>Chocolate Dream Cake</h3>
+                <div class="rating">★★★★☆ 4.6</div>
+                <p>Soft chocolate cake with creamy chocolate layers.</p>
+                <button onclick="addToCart('Chocolate Dream Cake',149)">
+                    Add to Cart ₹149
+                </button>
+            </div>
+        </div>
+
+
+        <div class="card food-card" data-name="Drinks">
+            <div class="food-img">🥤</div>
+            <div class="card-content">
+                <h3>Fresh Fruit Cooler</h3>
+                <div class="rating">★★★★★ 4.7</div>
+                <p>Refreshing chilled fruit drink for a perfect meal.</p>
+                <button onclick="addToCart('Fresh Fruit Cooler',99)">
+                    Add to Cart ₹99
+                </button>
+            </div>
+        </div>
+
+
+        <div class="card food-card" data-name="Indian Dosa">
+            <div class="food-img">🥞</div>
+            <div class="card-content">
+                <h3>South Indian Dosa</h3>
+                <div class="rating">★★★★★ 4.8</div>
+                <p>Crispy dosa served with sambar and chutney.</p>
+                <button onclick="addToCart('South Indian Dosa',120)">
+                    Add to Cart ₹120
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- OWNER DASHBOARD -->
+
+<section id="ownerSection">
+
+    <div class="dashboard">
+
+        <h2>🏪 Restaurant Owner Dashboard</h2>
+
+        <div class="stats">
+
+            <div class="stat">
+                <h3>₹48,650</h3>
+                <p>Total Revenue</p>
+            </div>
+
+            <div class="stat">
+                <h3>186</h3>
+                <p>Total Orders</p>
+            </div>
+
+            <div class="stat">
+                <h3>32</h3>
+                <p>Menu Items</p>
+            </div>
+
+            <div class="stat">
+                <h3>4.8 ⭐</h3>
+                <p>Restaurant Rating</p>
+            </div>
+
+        </div>
+
+        <div class="owner-buttons">
+            <button onclick="addMenu()">＋ Add Menu Item</button>
+            <button onclick="manageOrders()">📦 Manage Orders</button>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- CUSTOMER ORDERS -->
+
+<section id="ordersSection">
+
+    <div class="section-title">
+        <h2>📦 Your Orders</h2>
+        <p>Track your recent food orders</p>
+    </div>
+
+    <div class="card" style="padding:25px;max-width:700px;margin:auto;">
+
+        <h3>🍕 Cheesy Italian Pizza</h3>
+        <p style="margin:10px 0;color:#777;">
+            Order #FG10245
+        </p>
+
+        <div style="font-weight:bold;color:#ff4d4d;">
+            ● Preparing your food
+        </div>
+
+        <p style="margin-top:10px;">
+            Estimated delivery: 25 minutes
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- CART -->
+
+<div id="cart">
+
+    <h2>🛒 Your Cart</h2>
+
+    <div id="cartItems">
+        Your cart is empty.
+    </div>
+
+    <div class="total">
+        Total: ₹<span id="cartTotal">0</span>
+    </div>
+
+    <button class="checkout" onclick="checkout()">
+        Proceed to Checkout
+    </button>
+
+</div>
+
+
+<footer>
+
+    <h3>FoodieGo 🍴</h3>
+    <p style="margin-top:8px;color:#aaa;">
+        Delicious food. Fast delivery. Happy customers.
+    </p>
+
+    <p style="margin-top:15px;color:#777;">
+        © 2026 FoodieGo | Full Stack Web Development Lab
+    </p>
+
+</footer>
+
+
+<script>
+
+let cart = [];
+let total = 0;
+
+
+/* NAVIGATION */
+
+function goHome(){
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+
+}
+
+
+function showRestaurants(){
+
+    document.getElementById("restaurantSection")
+    .scrollIntoView({behavior:"smooth"});
+
+}
+
+
+function showOwner(){
+
+    document.getElementById("ownerSection")
+    .scrollIntoView({behavior:"smooth"});
+
+}
+
+
+function showOrders(){
+
+    document.getElementById("ordersSection")
+    .scrollIntoView({behavior:"smooth"});
+
+}
+
+
+/* CART */
+
+function addToCart(name,price){
+
+    cart.push({
+        name:name,
+        price:price
+    });
+
+    total += price;
+
+    document.getElementById("cartCount").innerText = cart.length;
+
+    updateCart();
+
+    document.getElementById("cart").style.display="block";
+
+}
+
+
+function updateCart(){
+
+    let items = document.getElementById("cartItems");
+
+    if(cart.length === 0){
+
+        items.innerHTML="Your cart is empty.";
+
+    }else{
+
+        items.innerHTML="";
+
+        cart.forEach((item,index)=>{
+
+            items.innerHTML += `
+                <div class="cart-item">
+                    <b>${item.name}</b>
+                    <br>
+                    ₹${item.price}
+                    <button
+                    onclick="removeItem(${index})"
+                    style="float:right;border:none;background:none;cursor:pointer;">
+                    ❌
+                    </button>
+                </div>
+            `;
+
+        });
+
+    }
+
+    document.getElementById("cartTotal").innerText=total;
+
+}
+
+
+function removeItem(index){
+
+    total -= cart[index].price;
+
+    cart.splice(index,1);
+
+    document.getElementById("cartCount").innerText=cart.length;
+
+    updateCart();
+
+}
+
+
+function toggleCart(){
+
+    let cartBox=document.getElementById("cart");
+
+    if(cartBox.style.display==="block"){
+        cartBox.style.display="none";
+    }else{
+        cartBox.style.display="block";
+    }
+
+}
+
+
+/* CHECKOUT */
+
+function checkout(){
+
+    if(cart.length===0){
+
+        alert("Your cart is empty! Add some delicious food first 😋");
+
+        return;
+
+    }
+
+    alert(
+        "🎉 Order placed successfully!\n\n" +
+        "Total Amount: ₹" + total +
+        "\n\nYour food is being prepared!"
+    );
+
+    cart=[];
+    total=0;
+
+    document.getElementById("cartCount").innerText=0;
+
+    updateCart();
+
+}
+
+
+/* SEARCH */
+
+function searchFood(){
+
+    let value=document
+        .getElementById("search")
+        .value
+        .toLowerCase();
+
+    let cards=document.querySelectorAll(".food-card");
+
+    cards.forEach(card=>{
+
+        let name=card
+            .getAttribute("data-name")
+            .toLowerCase();
+
+        if(name.includes(value)){
+            card.style.display="block";
+        }else{
+            card.style.display="none";
+        }
+
+    });
+
+}
+
+
+/* CATEGORY */
+
+function filterFood(category){
+
+    let cards=document.querySelectorAll(".food-card");
+
+    cards.forEach(card=>{
+
+        let name=card
+            .getAttribute("data-name")
+            .toLowerCase();
+
+        if(
+            category==="Pizza" && name.includes("pizza") ||
+            category==="Burger" && name.includes("burger") ||
+            category==="Indian" && name.includes("indian") ||
+            category==="Dessert" && name.includes("dessert") ||
+            category==="Drinks" && name.includes("drinks")
+        ){
+
+            card.style.display="block";
+
+        }else{
+
+            card.style.display="none";
+
+        }
+
+    });
+
+    showRestaurants();
+
+}
+
+
+/* OWNER ACTIONS */
+
+function addMenu(){
+
+    let item=prompt("Enter new food item name:");
+
+    if(item){
+
+        alert(
+            "✅ " + item +
+            " has been added to your menu!"
+        );
+
+    }
+
+}
+
+
+function manageOrders(){
+
+    alert(
+        "📦 Order Management\n\n" +
+        "New Orders: 8\n" +
+        "Preparing: 12\n" +
+        "Out for Delivery: 6"
+    );
+
+}
+
+</script>
+
+</body>
+</html>
